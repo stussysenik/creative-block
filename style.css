@@ -1,0 +1,156 @@
+:root {
+  --font-serif: "Inter", sans-serif;
+  --bg-color: #f9f9f9;
+  --card-bg: #ffffff;
+  --text-color: #1a1a1a;
+  --card-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.05);
+  /* --- CONFIGURATION KNOBS --- */
+  /* Change this to make the border thicker or thinner */
+  --card-outline: 8px solid #00b7ff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-serif);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  padding: 20px;
+  /* Add padding to body to prevent edge touching on mobile */
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Perspective container */
+.card-container {
+  perspective: 1500px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- CARD SIZE --- */
+.card-wrapper {
+  /* CHANGE HERE: Control the overall size of the card */
+  /* Increased slightly to 320px to allow text to breathe */
+  width: 320px;
+  height: 320px;
+
+  /* Mobile safety: ensure it doesn't overflow very small screens */
+  max-width: 85vw;
+  /* Maintain square aspect ratio automatically */
+  aspect-ratio: 1 / 1;
+  position: relative;
+  cursor: pointer;
+}
+
+/* The Card itself */
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  /* Slower, analog feel */
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+
+  /* PERF: Fix jitter/lag on flip */
+  will-change: transform;
+  -webkit-transform: translateZ(0);
+  /* Hardware acceleration hack */
+}
+
+/* Flip state */
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* Card faces */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 24px;
+  background-color: var(--card-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  text-align: center;
+  /* Paper texture effect (subtle noise) */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  border: var(--card-outline);
+  /* Sky blue outline */
+  /* "Dumb" centering: Remove optical offset, just pure center */
+  padding: 15px;
+}
+
+/* Front Face */
+.card-front {
+  /* CHANGE HERE: Control text size for the Question */
+  /* Reduced slightly to improve wrapping flow (prevent 1 word lines) */
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+  z-index: 2;
+  text-transform: uppercase;
+  /* Modern CSS to balance lines specifically for short headlines */
+  text-wrap: balance;
+  padding: 0 10px;
+  /* Safety padding */
+}
+
+/* Back Face */
+/* Back Face */
+.card-back {
+  /* CHANGE HERE: Control text size for the Answer */
+  font-size: 1.8rem;
+  font-weight: 600;
+  transform: rotateY(180deg);
+  font-style: normal;
+  color: #333;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* Responsive adjustments for Mobile */
+@media (max-width: 600px) {
+  .card-wrapper {
+    /* On mobile, we let it fill a bit more space relative to viewport */
+    width: 85vw;
+    height: 85vw;
+  }
+
+  /* Specific mobile tweak for the "creative block" accent */
+  .card-front {
+    font-size: 1.6rem;
+    /* Slightly smaller to ensure it fits nicely */
+  }
+
+  .accent-text {
+    display: block;
+    /* Force it to its own line if needed, or rely on <br> */
+    /* margin-top: 5px; */
+    /* Add a little breath */
+  }
+}
