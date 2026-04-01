@@ -2,6 +2,9 @@
 
 # Creative Block
 
+![Demo](demo.gif)
+
+
 "what to do when I'm stuck in a creative block?"
 
 ![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=css3&logoColor=white)
